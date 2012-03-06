@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_helpful_help_access()
+ */
+function helpful_hide_helpful_help_access($path, $args, $help_item){
+  global $user;
+  
+  //Look up if user has hid this help item before.
+  $topic_id = drupal_html_class($help_item['module'] .'-'. $help_item['module']);
+  if (empty($user->data['helpful_hide'][$topic_id])){
+    return TRUE;
+  }
+}
