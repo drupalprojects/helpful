@@ -1,0 +1,100 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_permission()
+ */
+function helpful_permission(){
+  return array(
+    'access helpful' => array(
+      'title' => t('Access helpful information.'), 
+      'description' => t('Access helpful information and links.'),
+    ),
+    'administer helpful' => array(
+      'title' => t('Administer helpful module.'), 
+      'description' => t('Administer helpful topics and settings.'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_help()
+ */
+function helpful_help($path, $args) {
+  $help = helpful_get_help_paths();
+  foreach ($help[$path] as $help_item){
+    $output .= theme('helpful_topic', $help_item);
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helpful_theme() {
+  $hooks['helpful_topic'] = array(
+    'variables' => array(
+      'module'   => NULL,
+      'topic'    => NULL,
+      'type'     => 'icon',
+      'title'    => '',
+    ),
+  );
+  return $hooks;
+}
+
+/**
+ *
+ */
+function template_preprocess_helpful_topic(&$vars){
+  $vars['contents'] = advanced_help_view_topic($vars['module'], $vars['topic']);
+}
+
+/**
+ *
+ */
+function theme_helpful_topic($vars){
+  return $vars['contents'];
+}
+
+/**
+ * Cache getter for help topic paths
+ */
+function helpful_get_help_paths() {
+  $help = cache_get('helpful_help_paths');
+  if (empty($help)){
+    $help = helpful_get_paths();
+    cache_set('helpful_help_paths', $help, CACHE_PERMANENT);
+  }
+  return $help;
+}
+
+/**
+ * Find all advanced_help topics with a set "help path"
+ */
+function helpful_get_paths() {
+  $all_topics = advanced_help_get_topics();
+  $help_paths = array();
+  
+  foreach ($all_topics as $module => $topics){
+    foreach ($topics as $name => $topic){
+      if ($topic['ini']['help path']){
+        $path = $topic['ini']['help path'];
+        $item = array(
+          'module' => $module,
+          'topic' => $name,
+        );
+        
+        if (!isset($help_paths[$path])){
+          $help_paths[$path] = array($item);
+        } else {
+          $help_paths[$path][] = $item;
+        }
+      }
+    }
+  }
+  return $help_paths;
+}
