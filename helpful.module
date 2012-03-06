@@ -24,11 +24,14 @@ function helpful_permission(){
  * Implements hook_help()
  */
 function helpful_help($path, $args) {
-  $help = helpful_get_help_paths();
-  foreach ($help[$path] as $help_item){
-    $output .= theme('helpful_topic', $help_item);
+  if (user_access('access helpful')){  
+    $output = '';
+    $help = helpful_get_help_paths();
+    foreach ($help[$path] as $help_item){
+      $output .= theme('helpful_topic', $help_item);
+    }
+    return $output;
   }
-  return $output;
 }
 
 /**
@@ -41,6 +44,7 @@ function helpful_theme() {
       'topic'    => NULL,
       'type'     => 'icon',
       'title'    => '',
+      'contents' => '',
     ),
   );
   return $hooks;
