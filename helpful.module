@@ -34,6 +34,8 @@ function helpful_help($path, $args) {
       
       //One FALSE and we deny
       if (count($access) == count(array_filter($access))){
+        $help_item['args'] = $args;
+        $help_item['path'] = $path;
         $output .= theme('helpful_topic', $help_item);
       }
     }
@@ -52,6 +54,8 @@ function helpful_theme() {
       'type'     => 'icon',
       'title'    => '',
       'contents' => '',
+      'args' => array(),
+      'path' => '',
     ),
   );
   return $hooks;
@@ -61,6 +65,7 @@ function helpful_theme() {
  *
  */
 function template_preprocess_helpful_topic(&$vars){
+  $vars['topic'] = advanced_help_get_topic($vars['module'], $vars['topic']);
   $vars['contents'] = advanced_help_view_topic($vars['module'], $vars['topic']);
 }
 
