@@ -77,5 +77,5 @@ function helpful_hide_helpful_help_access($path, $args, $help_item){
  * - Adds the "hide" link.
  */
 function helpful_hide_preprocess_helpful_topic(&$vars){
-  $vars['contents'] .= l(t('Hide'), 'helpful_hide/' . $vars['module'] . '/' . $vars['topic'], array('query' => drupal_get_destination()));
+  $vars['contents'] .= '<span class="helpful-hide">' . l(t('Hide'), 'helpful_hide/' . $vars['module'] . '/' . $vars['topic'], array('query' => drupal_get_destination())) . "</span>";
 }
