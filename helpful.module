@@ -24,7 +24,7 @@ function helpful_permission(){
  * Implements hook_help()
  */
 function helpful_help($path, $args) {
-  if (user_access('access helpful')){  
+  if (user_access('access helpful')){
     $output = '';
     $help = helpful_get_help_paths();
     foreach ($help[$path] as $help_item){
@@ -62,15 +62,14 @@ function helpful_theme() {
 }
 
 /**
- *
+ * Preprocessor for theme_helpful_topic()
  */
 function template_preprocess_helpful_topic(&$vars){
-  $vars['topic'] = advanced_help_get_topic($vars['module'], $vars['topic']);
   $vars['contents'] = advanced_help_view_topic($vars['module'], $vars['topic']);
 }
 
 /**
- *
+ * Generates content for a help topic.
  */
 function theme_helpful_topic($vars){
   return $vars['contents'];

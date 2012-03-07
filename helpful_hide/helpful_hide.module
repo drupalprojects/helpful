@@ -13,7 +13,12 @@ function helpful_hide_menu() {
     'access arguments' => array('access helpful hide'), 
     'type' => MENU_CALLBACK,
   );
-
+  $items['helpful_hide/show'] = array(
+    'title' => 'Reset Help', 
+    'page callback' => 'helpful_hide_show_callback', 
+    'access arguments' => array('access helpful hide'), 
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -24,6 +29,18 @@ function helpful_hide_callback($module, $topic){
   global $user;
   $topic_id = drupal_html_class($module .'-'. $topic);
   $user->data['helpful_hide'][$topic_id] = TRUE;
+  user_save($user);
+ 
+  //Destination takes over.  if not, goto front.
+  drupal_goto('<front>');
+}
+
+/**
+ * Menu callback for helpful_hide/show/module/topic
+ */
+function helpful_hide_show_callback(){
+  global $user;
+  unset($user->data['helpful_hide']);
   user_save($user);
   drupal_goto('<front>');
 }
