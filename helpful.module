@@ -95,7 +95,7 @@ function helpful_paths_rebuild() {
   
   foreach ($all_topics as $module => $topics){
     foreach ($topics as $name => $topic){
-      if ($topic['ini']['help path']){
+      if (isset($topic['ini']['help path'])){
         $path = $topic['ini']['help path'];
         $item = array(
           'module' => $module,
