@@ -1,3 +1,4 @@
 name = Helpful Hide
 description = Allows users to hide helpful messages.
 core = 7.x
+dependencies[] = helpful
