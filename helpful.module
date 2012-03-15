@@ -27,6 +27,12 @@ function helpful_help($path, $args) {
   if (user_access('access helpful')){
     $output = '';
     $help = helpful_get_help_paths();
+
+    //If no help here, bail out.
+    if (!isset($help[$path])) {
+      return;
+    }
+
     foreach ($help[$path] as $help_item){
       
       //Check access with modules
