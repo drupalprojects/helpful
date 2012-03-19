@@ -19,6 +19,36 @@ function helpful_permission(){
   );
 }
 
+/**
+ * Implements hook_menu_alter()
+ */
+function helpful_menu_alter(&$items){
+  
+  //Replace advanced help menu callbacks with our own.
+  //s$items[];
+  $items['help/%/%']['access callback'] = 'helpful_page_access_callback';
+  $items['help/%/%']['access arguments'] = array(1, 2);
+}
+
+/**
+ *
+ */
+function helpful_page_access_callback($module, $topic){
+
+  return TRUE;
+  //First, check if this is a "message" topic type
+  //If topic help type = 'message', page should not be present.
+  $topic = advanced_help_get_topic($module, $topic);
+  dsm($topic);
+  
+  return TRUE;
+  
+  //Next check if user_access('access helpful');
+  
+  //Next, fallback to advanced_help default access check
+  return user_access('view advanced help topic');
+  
+}
 
 /**
  * Implements hook_help()
@@ -27,6 +57,12 @@ function helpful_help($path, $args) {
   if (user_access('access helpful')){
     $output = '';
     $help = helpful_get_help_paths();
+
+    //If no help here, bail out.
+    if (!isset($help[$path])) {
+      return;
+    }
+
     foreach ($help[$path] as $help_item){
       
       //Check access with modules
@@ -95,7 +131,7 @@ function helpful_paths_rebuild() {
   
   foreach ($all_topics as $module => $topics){
     foreach ($topics as $name => $topic){
-      if ($topic['ini']['help path']){
+      if (isset($topic['ini']['help path'])){
         $path = $topic['ini']['help path'];
         $item = array(
           'module' => $module,
