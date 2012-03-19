@@ -26,24 +26,26 @@ function helpful_menu_alter(&$items){
   
   //Replace advanced help menu callbacks with our own.
   //s$items[];
-  $items['help/%/%']['access callback'] = 'helpful_page_access_callback';
+  $items['help/%/%']['access callback'] = 'helpful_page_access';
   $items['help/%/%']['access arguments'] = array(1, 2);
 }
 
 /**
  *
  */
-function helpful_page_access_callback($module, $topic){
+function helpful_page_access($module, $topic){
+  $topic_data = advanced_help_get_topic($module, $topic);
 
-  return TRUE;
   //First, check if this is a "message" topic type
   //If topic help type = 'message', page should not be present.
-  $topic = advanced_help_get_topic($module, $topic);
-  dsm($topic);
-  
-  return TRUE;
+  if (isset($topic_data['ini']['help type']) && $topic_data['ini']['help type'] != 'message' ) {
+    return FALSE;
+  }
   
   //Next check if user_access('access helpful');
+  if (user_access('access helpful')){
+    return TRUE;
+  }
   
   //Next, fallback to advanced_help default access check
   return user_access('view advanced help topic');
