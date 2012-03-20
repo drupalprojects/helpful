@@ -38,8 +38,8 @@ function helpful_page_access($module, $topic){
 
   //First, check if this is a "message" topic type or if page = FALSE
   //If topic help type = 'message', page should not be present.
-  if (isset($topic_data['ini']['page']) && $topic_data['ini']['page'] == FALSE
-    || isset($topic_data['ini']['help type']) && $topic_data['ini']['help type'] != 'message') {
+  if ((isset($topic_data['ini']['page']) && $topic_data['ini']['page'] == FALSE)
+    || (isset($topic_data['ini']['help type']) && $topic_data['ini']['help type'] != 'message')) {
     return FALSE;
   }
   
