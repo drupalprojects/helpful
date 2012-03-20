@@ -1,3 +1,4 @@
 name = Helpful Example
 description = An example of the Helpful system.
 core= 7.x
+dependencies[] = helpful
