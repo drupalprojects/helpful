@@ -19,5 +19,6 @@ To patch advanced help, simply download the patch file to advanced_help's folder
 run the terminal command:
 
 $ cd /path/to/sites/all/modules/advanced_help
+$ wget http://drupal.org/files/advanced_help-ini_data_to_alter.patch
 $ patch -p0 < advanced_help-ini_data_to_alter.patch
 
